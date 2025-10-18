@@ -1,0 +1,5 @@
+node: v22.20.0
+java/jdk: 17
+react native: 20.0.0
+npm: 10.9.3
+gradle: 9
