@@ -24,7 +24,7 @@ ExpeApp/
 
 ---
 
-# ⚙️ BACKEND SETUP (FASTAPI + MYSQL)
+# BACKEND SETUP (FASTAPI + MYSQL)
 
 ## 1. Create & Activate Virtual Environment
 
