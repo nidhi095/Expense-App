@@ -93,7 +93,7 @@ http://192.168.x.x:8000/docs   ← Swagger API UI
 
 ---
 
-# 📱 FRONTEND SETUP (REACT NATIVE)
+# FRONTEND SETUP (REACT NATIVE)
 
 ##  1. Install Node Dependencies
 
@@ -165,7 +165,7 @@ You can test:
 
 ---
 
-# 🛠 COMMON ISSUES & FIXES
+# COMMON ISSUES & FIXES
 
 ### **Network request failed**
 **Cause:** Wrong API IP inside React Native.
