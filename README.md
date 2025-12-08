@@ -1,97 +1,227 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+#  ExpeApp — React Native + FastAPI + MySQL
 
-# Getting Started
+A full-stack mobile application for managing **Expenses, Trips, and Reports** with:
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- **React Native (Android)**
+- **FastAPI Backend**
+- **MySQL Database**
+- **JWT Authentication**
+- Receipt Image Upload + OCR (client-side)
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+# Project Structure
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+ExpeApp/
+│
+├── backend/        # FastAPI app
+│   ├── app/
+│   └── venv/
+│
+└── src/            # React Native App
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+# ⚙️ BACKEND SETUP (FASTAPI + MYSQL)
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## 1. Create & Activate Virtual Environment
 
 ```sh
-bundle install
+python -m venv venv
+venv\Scripts\activate      # Windows
+# OR
+source venv/bin/activate   # macOS/Linux
 ```
 
-Then, and every time you update your native dependencies, run:
+---
+
+## 2. Install Python Dependencies
 
 ```sh
-bundle exec pod install
+pip install -r requirements.txt
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
+
+##  3. Setup MySQL Database
+
+Create a new database named:
+
+```
+expeapp
+```
+
+Verify credentials in:
+
+`backend/app/database.py`
+
+```python
+MYSQL_USER = "root"
+MYSQL_PASSWORD = ""       # your MySQL password
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DB = "expeapp"
+```
+
+---
+
+## 4. Run the FastAPI Backend on Your IPv4
+
+Get your IPv4:
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+ipconfig
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Example: `192.168.1.38`
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Run backend:
 
-## Step 3: Modify your app
+```sh
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-Now that you have successfully run the app, let's make changes!
+Backend is now available at:
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+```
+http://192.168.x.x:8000
+http://192.168.x.x:8000/docs   ← Swagger API UI
+```
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+ **Must use IP, NOT 127.0.0.1**, otherwise the mobile app cannot connect.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! 
+# 📱 FRONTEND SETUP (REACT NATIVE)
 
-You've successfully run and modified your React Native App. 
+##  1. Install Node Dependencies
 
-### Now what?
+```sh
+npm install
+```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+---
 
-# Troubleshooting
+## 2. Set API Base URL for Mobile App
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Open:
 
-# Learn More
+```
+src/api/axios.ts
+```
 
-To learn more about React Native, take a look at the following resources:
+Update base URL to your IPv4:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```ts
+baseURL: "http://192.168.x.x:8000";
+```
+
+Every developer must set this to *their own* IPv4.
+
+---
+
+# RUNNING THE REACT NATIVE APP
+
+## **STEP 1 → Start Metro (reset cache)**
+
+```sh
+npx react-native start --reset-cache
+```
+
+---
+
+## **STEP 2 → Build & Run Android app (no second metro server)**
+
+```sh
+npx react-native run-android --no-packager
+```
+
+---
+
+## Requirements
+
+- Android Studio OR an Android phone with USB debugging enabled  
+- Backend running on the same WiFi network  
+- axios baseURL pointing to the backend IPv4  
+
+---
+
+# TESTING
+
+###  Swagger API Docs
+```
+http://192.168.x.x:8000/docs
+```
+
+You can test:
+
+- Signup
+- Login
+- Create Expenses
+- Upload Receipts
+- Create Trips
+- Create Reports
+
+---
+
+# 🛠 COMMON ISSUES & FIXES
+
+### **Network request failed**
+**Cause:** Wrong API IP inside React Native.
+
+Fix:
+
+```
+src/api/axios.ts
+baseURL: "http://YOUR_IPV4:8000"
+```
+
+---
+
+### **"Not authenticated"**
+Backend was started using 127.0.0.1.
+
+**Fix:** Always use:
+
+```sh
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+---
+
+### Data appears in backend but not in app
+- You logged in with a different user.
+- Token expired.
+- Wrong IP in axios.ts.
+
+---
+
+# IMPORTANT FILES TO EDIT
+
+| Purpose | File |
+|---------|------|
+| Backend DB settings | `backend/app/database.py` |
+| Backend main router | `backend/app/main.py` |
+| Frontend API URL | `src/api/axios.ts` |
+| App data logic | `src/context/AppDataContext.tsx` |
+
+---
+
+# HOW OTHERS CAN RUN YOUR PROJECT
+
+1. Clone repo  
+2. Edit `src/api/axios.ts` → update IPv4  
+3. Start MySQL & create `expeapp` DB  
+4. Install backend deps & run FastAPI  
+5. Install frontend deps  
+6. Run:
+
+```
+npx react-native start --reset-cache
+npx react-native run-android --no-packager
+```
+
+Done 
+
+---
