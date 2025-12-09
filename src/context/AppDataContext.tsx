@@ -8,7 +8,7 @@ import api from '../api/axios';
    ----------------------- */
 // Derive API base URL from axios (so we don't mismatch IPs)
 const RAW_BASE = (api.defaults.baseURL || '').replace(/\/$/, '');
-const API_BASE_URL = RAW_BASE || 'http://192.168.1.33:8000';
+const API_BASE_URL = RAW_BASE || 'http://192.168.x.x:8000'; //ipaddress that both phone and laptop are connected to (same wifi)
 
 /* -----------------------
    Types
