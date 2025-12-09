@@ -3,7 +3,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const api = axios.create({
-  baseURL: "http://192.168.1.33:8000", // <-- this IP must be the same the backend runs on
+  baseURL: "http://192.168.x.x:8000", //ip address of  wifi that both laptop and phone that runs the frontend have
   timeout: 15000,
 });
 
